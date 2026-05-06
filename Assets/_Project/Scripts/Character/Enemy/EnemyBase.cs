@@ -10,6 +10,11 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] private float attackRange = 1.5f;
     [SerializeField] private float attackCooldown = 1f;
 
+    [Header("Loot")]
+    [SerializeField] private ItemData[] possibleDrops;
+    [SerializeField] private float dropChance = 0.3f;
+    [SerializeField] private GameObject itemDropPrefab;
+
     // Composants
     protected CharacterStats Stats;
     protected Transform Player;
@@ -125,6 +130,8 @@ public class EnemyBase : MonoBehaviour
         SetState(EnemyState.Dead);
         Rb.linearVelocity = Vector2.zero;
 
+        DropLoot();
+
         Debug.Log($"{enemyName} died ! Rewarding {experienceReward} XP");
 
         // Plus tard : drop loot, spawn VFX, etc.
@@ -139,5 +146,18 @@ public class EnemyBase : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+
+    private void DropLoot()
+    {
+        if (possibleDrops.Length == 0) return;
+        if (Random.value > dropChance) return;
+
+        // Choisit un item aléatoire
+        ItemData drop = possibleDrops[Random.Range(0, possibleDrops.Length)];
+
+        // Spawn l'item au sol
+        GameObject go = Instantiate(itemDropPrefab, transform.position, Quaternion.identity);
+        go.GetComponent<ItemDrop>().Init(drop);
     }
 }

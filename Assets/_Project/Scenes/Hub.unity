@@ -683,6 +683,8 @@ GameObject:
   - component: {fileID: 4333062767540999609}
   - component: {fileID: 1602164368582593334}
   - component: {fileID: 4828703562276526201}
+  - component: {fileID: 4828703562276526203}
+  - component: {fileID: 4828703562276526202}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -927,6 +929,7 @@ MonoBehaviour:
   cooldown: 1
   manaCost: 10
   damageType: 0
+  icon: {fileID: 0}
   novaRadius: 5
   novaExpansionSpeed: 8
   novaDuration: 0.3
@@ -996,6 +999,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94cddac0bb430a34d930fb0bd2cd6766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerManager
+--- !u!114 &4828703562276526202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2338349565792483219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfe36bc042643424bbc6adad260022bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentManager
+--- !u!114 &4828703562276526203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2338349565792483219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2964281416d842449bd8378d0536a364, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Inventory
+  maxSlots: 20
 --- !u!114 &5265459330791410426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1012,6 +1040,7 @@ MonoBehaviour:
   cooldown: 1
   manaCost: 10
   damageType: 0
+  icon: {fileID: 0}
   projectilePrefab: {fileID: 2905762459068047817, guid: 4d70cf0a46b773c40a20484861727369, type: 3}
   firePoint: {fileID: 0}
   projectileCount: 1
@@ -1032,6 +1061,7 @@ MonoBehaviour:
   cooldown: 1
   manaCost: 10
   damageType: 1
+  icon: {fileID: 0}
   dotType: 1
   damagePerTick: 5
   tickInterval: 0.5
