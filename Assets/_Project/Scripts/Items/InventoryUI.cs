@@ -109,23 +109,59 @@ public class InventoryUI : MonoBehaviour
 
     public void RefreshInventory()
     {
-        // Vide la grille
+        // Détruit les anciens ItemDragHandlers
         foreach (InventorySlotUI slot in _slots)
-            slot.ClearSlot();
+        {
+            if (slot.CurrentItem != null)
+            {
+                Destroy(slot.CurrentItem.gameObject);
+                slot.ClearSlot();
+            }
+        }
 
-        // Remet les items
+        // Initialise les slots
+        foreach (InventorySlotUI slot in _slots)
+            slot.Init(_inventory, _equipmentManager);
+
+        // Place les items
         for (int i = 0; i < _inventory.Items.Count && i < _slots.Count; i++)
         {
             ItemData item = _inventory.Items[i];
+
             GameObject dragGO = Instantiate(itemDragHandlerPrefab, _slots[i].transform);
             ItemDragHandler drag = dragGO.GetComponent<ItemDragHandler>();
             drag.Init(item);
 
-            // Ajoute le tooltip
             ItemTooltip tooltip = dragGO.GetComponent<ItemTooltip>();
             if (tooltip != null) tooltip.Init(item);
 
             _slots[i].SetItem(drag);
+        }
+
+        RefreshEquipmentSlots();
+    }
+
+    public void RefreshEquipmentSlots()
+    {
+        EquipmentSlotUI[] slots = equipmentSlotsParent.GetComponentsInChildren<EquipmentSlotUI>();
+        foreach (EquipmentSlotUI slot in slots)
+        {
+            // Vide le slot visuellement
+            if (slot.CurrentItem != null)
+            {
+                Destroy(slot.CurrentItem.gameObject);
+                slot.ClearSlot();
+            }
+
+            // Remet l'item équipé si présent
+            ItemData equippedItem = _equipmentManager.GetEquipped(slot.Slot);
+            if (equippedItem != null)
+            {
+                GameObject dragGO = Instantiate(itemDragHandlerPrefab, slot.transform);
+                ItemDragHandler drag = dragGO.GetComponent<ItemDragHandler>();
+                drag.Init(equippedItem);
+                slot.SetItem(drag);
+            }
         }
     }
 }

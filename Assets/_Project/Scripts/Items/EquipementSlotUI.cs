@@ -14,6 +14,7 @@ public class EquipmentSlotUI : MonoBehaviour, IDropHandler
     private ItemDragHandler _currentItem;
     private EquipmentManager _equipmentManager;
     private Inventory _inventory;
+    public ItemDragHandler CurrentItem => _currentItem;
 
     public void Init(EquipmentSlot slot, EquipmentManager equipmentManager, Inventory inventory)
     {

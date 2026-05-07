@@ -3,7 +3,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ItemDragHandler : MonoBehaviour, 
-    IBeginDragHandler, IDragHandler, IEndDragHandler
+    IBeginDragHandler, IDragHandler, IEndDragHandler,
+    IPointerClickHandler
 {
     private Image iconImage;
 
@@ -89,5 +90,28 @@ public class ItemDragHandler : MonoBehaviour,
             ItemRarity.Unique    => new Color(0.8f, 0.1f, 0.1f),
             _ => Color.white
         };
+    }
+    
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // Clic droit → équipe directement
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            if (Item == null) return;
+
+            // Trouve l'EquipmentManager
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player == null) return;
+
+            EquipmentManager equipmentManager = player.GetComponent<EquipmentManager>();
+            Inventory inventory = player.GetComponent<Inventory>();
+
+            if (equipmentManager != null)
+            {
+                equipmentManager.Equip(Item);
+                inventory?.RemoveItem(Item);
+                InventoryUI.Instance?.RefreshInventory();
+            }
+        }
     }
 }
