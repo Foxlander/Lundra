@@ -20,6 +20,7 @@ public class EnemyBase : MonoBehaviour
     protected CharacterStats Stats;
     protected Transform Player;
     protected Rigidbody2D Rb;
+    protected EnemyAnimator EnemyAnimator;
 
     // État
     private float _attackTimer;
@@ -37,11 +38,11 @@ public class EnemyBase : MonoBehaviour
     {
         Stats = GetComponent<CharacterStats>();
         Rb = GetComponent<Rigidbody2D>();
+        EnemyAnimator = GetComponent<EnemyAnimator>();
     }
 
     protected virtual void Start()
     {
-        // Trouve le joueur au démarrage
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
             Player = playerObj.transform;
@@ -58,7 +59,6 @@ public class EnemyBase : MonoBehaviour
 
         float distanceToPlayer = Vector2.Distance(transform.position, Player.position);
 
-        // Machine à états simple
         if (distanceToPlayer <= attackRange)
             SetState(EnemyState.Attack);
         else if (distanceToPlayer <= detectionRange)
@@ -66,7 +66,6 @@ public class EnemyBase : MonoBehaviour
         else
             SetState(EnemyState.Idle);
 
-        // Exécute l'état courant
         switch (_currentState)
         {
             case EnemyState.Idle:
@@ -99,12 +98,6 @@ public class EnemyBase : MonoBehaviour
         Vector2 direction = (Player.position - transform.position).normalized;
         float speed = Stats.GetStatValue(StatType.MoveSpeed);
         Rb.linearVelocity = direction * speed;
-
-        // Flip sprite selon direction
-        if (direction.x < 0)
-            transform.localScale = new Vector3(-1, 1, 1);
-        else
-            transform.localScale = new Vector3(1, 1, 1);
     }
 
     protected virtual void HandleAttack()
@@ -115,6 +108,10 @@ public class EnemyBase : MonoBehaviour
         {
             PerformAttack();
             _attackTimer = attackCooldown;
+
+            // Déclenche l'animation d'attaque
+            if (EnemyAnimator != null)
+                EnemyAnimator.TriggerAttack();
         }
     }
 
@@ -125,21 +122,22 @@ public class EnemyBase : MonoBehaviour
             DamageSystem.ApplyDamage(Stats, playerStats);
     }
 
-    // Appelé depuis CharacterStats quand HP <= 0
     public virtual void OnDeath()
     {
         SetState(EnemyState.Dead);
         Rb.linearVelocity = Vector2.zero;
 
+        // Déclenche l'animation de mort
+        if (EnemyAnimator != null)
+            EnemyAnimator.TriggerDeath();
+
         DropLoot();
 
         Debug.Log($"{enemyName} died ! Rewarding {experienceReward} XP");
 
-        // Plus tard : drop loot, spawn VFX, etc.
-        Destroy(gameObject, 0.5f);
+        Destroy(gameObject, 1.5f); // ← augmenté pour laisser l'animation jouer
     }
 
-    // Visualise les ranges dans l'éditeur
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
@@ -154,31 +152,23 @@ public class EnemyBase : MonoBehaviour
         if (possibleTemplates.Length == 0) return;
         if (Random.value > dropChance) return;
 
-        // Choisit un template aléatoire
-        ItemTemplate template = possibleTemplates[
-            Random.Range(0, possibleTemplates.Length)];
-
-        // Détermine la rareté aléatoirement
+        ItemTemplate template = possibleTemplates[Random.Range(0, possibleTemplates.Length)];
         ItemRarity rarity = RollRarity();
-
-        // Génère l'item
         ItemData generatedItem = ItemGenerator.Generate(template, rarity, enemyLevel, 1);
 
-        // Spawn au sol
         GameObject go = Instantiate(itemDropPrefab, transform.position, Quaternion.identity);
         go.GetComponent<ItemDrop>().Init(generatedItem);
     }
-    
+
     private ItemRarity RollRarity()
     {
-        float roll = Random.value; // nombre entre 0 et 1
+        float roll = Random.value;
 
-        if (roll < 0.01f) return ItemRarity.Unique;      // 1%
-        if (roll < 0.05f) return ItemRarity.Legendary;   // 4%
-        if (roll < 0.15f) return ItemRarity.Epic;         // 10%
-        if (roll < 0.35f) return ItemRarity.Rare;         // 20%
-        if (roll < 0.60f) return ItemRarity.Magic;        // 25%
-        return ItemRarity.Common;                          // 40%
+        if (roll < 0.01f) return ItemRarity.Unique;
+        if (roll < 0.05f) return ItemRarity.Legendary;
+        if (roll < 0.15f) return ItemRarity.Epic;
+        if (roll < 0.35f) return ItemRarity.Rare;
+        if (roll < 0.60f) return ItemRarity.Magic;
+        return ItemRarity.Common;
     }
-
 }
