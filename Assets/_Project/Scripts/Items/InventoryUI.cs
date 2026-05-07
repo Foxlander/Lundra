@@ -48,7 +48,6 @@ public class InventoryUI : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("Update tourne !");
         if (Keyboard.current.tabKey.wasPressedThisFrame)
             ToggleInventory();
     }

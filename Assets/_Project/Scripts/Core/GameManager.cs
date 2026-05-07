@@ -29,6 +29,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "TestScene")
+            return; // Bootstrap gère le state
+
         SetState(GameState.Hub);
     }
 
