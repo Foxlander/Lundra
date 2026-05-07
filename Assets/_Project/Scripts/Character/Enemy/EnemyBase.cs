@@ -11,9 +11,10 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] private float attackCooldown = 1f;
 
     [Header("Loot")]
-    [SerializeField] private ItemData[] possibleDrops;
+    [SerializeField] private ItemTemplate[] possibleTemplates;
     [SerializeField] private float dropChance = 0.3f;
     [SerializeField] private GameObject itemDropPrefab;
+    [SerializeField] private int enemyLevel = 1;
 
     // Composants
     protected CharacterStats Stats;
@@ -150,14 +151,34 @@ public class EnemyBase : MonoBehaviour
 
     private void DropLoot()
     {
-        if (possibleDrops.Length == 0) return;
+        if (possibleTemplates.Length == 0) return;
         if (Random.value > dropChance) return;
 
-        // Choisit un item aléatoire
-        ItemData drop = possibleDrops[Random.Range(0, possibleDrops.Length)];
+        // Choisit un template aléatoire
+        ItemTemplate template = possibleTemplates[
+            Random.Range(0, possibleTemplates.Length)];
 
-        // Spawn l'item au sol
+        // Détermine la rareté aléatoirement
+        ItemRarity rarity = RollRarity();
+
+        // Génère l'item
+        ItemData generatedItem = ItemGenerator.Generate(template, rarity, enemyLevel, 1);
+
+        // Spawn au sol
         GameObject go = Instantiate(itemDropPrefab, transform.position, Quaternion.identity);
-        go.GetComponent<ItemDrop>().Init(drop);
+        go.GetComponent<ItemDrop>().Init(generatedItem);
     }
+    
+    private ItemRarity RollRarity()
+    {
+        float roll = Random.value; // nombre entre 0 et 1
+
+        if (roll < 0.01f) return ItemRarity.Unique;      // 1%
+        if (roll < 0.05f) return ItemRarity.Legendary;   // 4%
+        if (roll < 0.15f) return ItemRarity.Epic;         // 10%
+        if (roll < 0.35f) return ItemRarity.Rare;         // 20%
+        if (roll < 0.60f) return ItemRarity.Magic;        // 25%
+        return ItemRarity.Common;                          // 40%
+    }
+
 }

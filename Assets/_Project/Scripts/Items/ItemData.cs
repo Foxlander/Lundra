@@ -8,10 +8,20 @@ public class ItemData : ScriptableObject
     public string itemName = "Item";
     public Sprite icon;
     public ItemRarity rarity = ItemRarity.Common;
-    public EquipmentSlot slot = EquipmentSlot.Weapon;
+    public EquipmentSlot slot = EquipmentSlot.MainHand;
 
     [Header("Stats")]
     public List<ItemStat> stats = new List<ItemStat>();
+
+    [Header("Affix (Légendaire)")]
+    public string affixName = "";
+    public string affixDescription = "";
+
+    [Header("Set (Unique)")]
+    public SetData setData;
+
+    [Header("Type de main")]
+    public HandType handType = HandType.OneHanded;
 }
 
 [System.Serializable]
