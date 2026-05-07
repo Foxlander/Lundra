@@ -21,49 +21,39 @@ public class EquipmentManager : MonoBehaviour
 
     public void Equip(ItemData item)
     {
-        // Si 2 mains → déséquipe l'OffHand
         if (item.handType == HandType.TwoHanded)
-        {
             if (_equipped.ContainsKey(EquipmentSlot.OffHand))
-                Unequip(EquipmentSlot.OffHand);
-        }
+                Unequip(EquipmentSlot.OffHand, false); // ← false
 
-        // Si on équipe OffHand → vérifie que MainHand n'est pas 2 mains
         if (item.slot == EquipmentSlot.OffHand)
-        {
             if (_equipped.TryGetValue(EquipmentSlot.MainHand, out ItemData mainHand))
                 if (mainHand.handType == HandType.TwoHanded)
-                    Unequip(EquipmentSlot.MainHand);
-        }
+                    Unequip(EquipmentSlot.MainHand, false); // ← false
 
-        // Déséquipe l'item actuel du slot
         if (_equipped.ContainsKey(item.slot))
-            Unequip(item.slot);
+            Unequip(item.slot, false); // ← false
 
-        // Équipe
         _equipped[item.slot] = item;
         ApplyStats(item, true);
 
-        // Mise à jour des sets
         if (item.setData != null)
             UpdateSetBonus(item.setData, true);
 
         Debug.Log($"Équipé : {item.itemName}");
     }
-
-    public void Unequip(EquipmentSlot slot)
+    
+    public void Unequip(EquipmentSlot slot, bool addToInventory = true)
     {
         if (!_equipped.TryGetValue(slot, out ItemData item)) return;
 
         ApplyStats(item, false);
-
-        // Mise à jour des sets
         if (item.setData != null)
             UpdateSetBonus(item.setData, false);
 
-        _inventory.AddItem(item);
-        _equipped.Remove(slot);
+        if (addToInventory)
+            _inventory.AddItem(item);
 
+        _equipped.Remove(slot);
         Debug.Log($"Déséquipé : {item.itemName}");
     }
 

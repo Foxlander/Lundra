@@ -94,12 +94,10 @@ public class ItemDragHandler : MonoBehaviour,
     
     public void OnPointerClick(PointerEventData eventData)
     {
-        // Clic droit → équipe directement
         if (eventData.button == PointerEventData.InputButton.Right)
         {
             if (Item == null) return;
 
-            // Trouve l'EquipmentManager
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player == null) return;
 
@@ -108,8 +106,20 @@ public class ItemDragHandler : MonoBehaviour,
 
             if (equipmentManager != null)
             {
+                // Sauvegarde l'index avant d'équiper
+                int originalIndex = inventory.GetItemIndex(Item);
+                
+                // Récupère l'item déjà équipé dans ce slot
+                ItemData currentEquipped = equipmentManager.GetEquipped(Item.slot);
+                
+                // Équipe le nouvel item
+                inventory.RemoveItem(Item);
                 equipmentManager.Equip(Item);
-                inventory?.RemoveItem(Item);
+
+                // Remet l'ancien item à la place du nouveau
+                if (currentEquipped != null && originalIndex >= 0)
+                    inventory.AddItemAtIndex(currentEquipped, originalIndex);
+
                 InventoryUI.Instance?.RefreshInventory();
             }
         }

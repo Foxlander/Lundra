@@ -123,10 +123,11 @@ public class InventoryUI : MonoBehaviour
         foreach (InventorySlotUI slot in _slots)
             slot.Init(_inventory, _equipmentManager);
 
-        // Place les items
-        for (int i = 0; i < _inventory.Items.Count && i < _slots.Count; i++)
+        // Place les items selon leur index exact
+        for (int i = 0; i < _slots.Count; i++)
         {
-            ItemData item = _inventory.Items[i];
+            ItemData item = _inventory.GetItemAtIndex(i);
+            if (item == null) continue;
 
             GameObject dragGO = Instantiate(itemDragHandlerPrefab, _slots[i].transform);
             ItemDragHandler drag = dragGO.GetComponent<ItemDragHandler>();
