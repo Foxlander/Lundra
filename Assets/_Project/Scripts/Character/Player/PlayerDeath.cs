@@ -4,16 +4,18 @@ using System.Collections;
 public class PlayerDeath : MonoBehaviour
 {
     [Header("Respawn Settings")]
-    [SerializeField] private float deathDuration = 2f;
+    [SerializeField] private float deathDuration = 3f;
 
     private PlayerController _controller;
     private CharacterStats _stats;
+    private PlayerAnimator _playerAnimator;
     private bool _isDead = false;
 
     private void Awake()
     {
         _controller = GetComponent<PlayerController>();
         _stats = GetComponent<CharacterStats>();
+        _playerAnimator = GetComponent<PlayerAnimator>();
     }
 
     public void OnPlayerDeath()
@@ -30,10 +32,18 @@ public class PlayerDeath : MonoBehaviour
 
         _controller.enabled = false;
 
+        // Déclenche l'animation AVANT le GameOver
+        if (_playerAnimator != null)
+            _playerAnimator.TriggerDeath();
+
+        // Attend que l'animation joue
+        yield return new WaitForSecondsRealtime(1.5f);
+
+        // GameOver seulement après
         if (GameManager.Instance != null)
             GameManager.Instance.GameOver();
 
-        yield return new WaitForSecondsRealtime(deathDuration);
+        yield return new WaitForSecondsRealtime(deathDuration - 1.5f);
 
         Respawn();
     }
