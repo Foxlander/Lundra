@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 4202604399354666754}
   - component: {fileID: 8343927108563826324}
   - component: {fileID: 7035783465340913560}
+  - component: {fileID: 7205867907683743932}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -193,8 +194,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1011117911
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 3799508404887519019, guid: 76cb941b8d1754943b581dfa4547d4cd, type: 3}
@@ -253,3 +254,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ccb04bc4a6a85f4db0cdc1a7ee478ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimator
+--- !u!114 &7205867907683743932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4653514436525208323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33a9edb8946b9f047b6a4805a1541485, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::YSorting
+  spriteRenderer: {fileID: 0}
+  offset: 0

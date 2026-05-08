@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5982092284935201089}
   - component: {fileID: 3179981177843843619}
   - component: {fileID: 537195434512898336}
+  - component: {fileID: 5242764220061331277}
   m_Layer: 0
   m_Name: ItemDrop
   m_TagString: Untagged
@@ -143,3 +144,17 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &5242764220061331277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8997544955409983146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33a9edb8946b9f047b6a4805a1541485, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::YSorting
+  spriteRenderer: {fileID: 0}
+  offset: 0
