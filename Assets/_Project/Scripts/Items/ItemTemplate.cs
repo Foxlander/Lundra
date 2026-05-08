@@ -10,6 +10,9 @@ public class ItemTemplate : ScriptableObject
     public HandType handType = HandType.OneHanded;
     public Sprite[] icons;
 
+    [Header("Type d'arme (MainHand seulement)")]
+    public WeaponType weaponType = WeaponType.None;
+
     [Header("Stat de base — Armes (MainHand/OffHand/TwoHanded)")]
     public float minDamageMin = 5f;
     public float minDamageMax = 15f;

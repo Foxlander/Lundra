@@ -14,17 +14,17 @@ public class GameManager : MonoBehaviour
     }
 
     public GameState CurrentState { get; private set; }
+    [SerializeField] private ItemSpriteDatabase itemSpriteDatabase;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        
+        // Force l'init de la database
+        if (itemSpriteDatabase != null)
+            ItemSpriteDatabase.Instance = itemSpriteDatabase;
     }
 
     private void Start()

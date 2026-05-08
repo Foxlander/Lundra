@@ -210,6 +210,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7805541156793056240, guid: 247830f88d900bf45bf16d67a702681e, type: 3}
+      propertyPath: itemSpriteDatabase
+      value: 
+      objectReference: {fileID: 11400000, guid: 67d1e33eac5ace644863754fbb73c278, type: 2}
     - target: {fileID: 9106036483030930729, guid: 247830f88d900bf45bf16d67a702681e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

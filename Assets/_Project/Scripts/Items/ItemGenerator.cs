@@ -30,12 +30,9 @@ public static class ItemGenerator
         item.slot = template.slot;
         item.handType = template.handType;
 
-        // ── Icône ─────────────────────────────────────────────
-        if (template.icons != null && template.icons.Length > 0)
-        {
-            int iconIndex = Mathf.Min((int)rarity, template.icons.Length - 1);
-            item.icon = template.icons[iconIndex];
-        }
+        // Sprite depuis la database
+        if (ItemSpriteDatabase.Instance != null)
+            item.icon = ItemSpriteDatabase.Instance.GetSpriteForTemplate(template);
 
         // ── Stat de base ──────────────────────────────────────
         if (template.IsWeapon)

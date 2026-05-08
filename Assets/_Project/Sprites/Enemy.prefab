@@ -79,9 +79,10 @@ MonoBehaviour:
   detectionRange: 3
   attackRange: 1.5
   attackCooldown: 1
-  possibleTemplates: []
+  possibleTemplates:
+  - {fileID: 11400000, guid: ad2a65db06349744ab66a190c0da2c82, type: 2}
   dropChance: 0.3
-  itemDropPrefab: {fileID: 0}
+  itemDropPrefab: {fileID: 8997544955409983146, guid: a1fda72cc4fe1a940bc28d2c421fbf9e, type: 3}
   enemyLevel: 1
 --- !u!50 &5920543502818893486
 Rigidbody2D:
